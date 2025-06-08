@@ -1,18 +1,18 @@
 import { Injectable } from "@nestjs/common";
+import type { SignInDto } from "./dto/sign-in.dto";
+import type { SignUpDto } from "./dto/sign-up.dto";
 
 @Injectable()
 export class AuthService {
-	signUp(/* signUp: SignUp */) {}
+	signUp(signUpDto: SignUpDto) {}
 
-	forgotPassword(email: string) {
-		console.log(email);
-	}
+	forgotPassword(email: string) {}
 
 	resetPassword(token: string) {}
 
 	verifyEmail(token: string) {}
 
-	signIn(/* signIn: SignIn */) {}
+	signIn(signInDto: SignInDto) {}
 
 	refreshToken() {}
 

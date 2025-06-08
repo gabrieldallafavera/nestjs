@@ -1,10 +1,9 @@
-import { Controller, Get, HttpCode } from "@nestjs/common";
-import { StatusCodes } from "http-status-codes";
+import { Controller, Get, HttpCode, HttpStatus } from "@nestjs/common";
 
 @Controller("ping")
 export class PingController {
 	@Get()
-	@HttpCode(StatusCodes.OK)
+	@HttpCode(HttpStatus.OK)
 	ping(): string {
 		return "pong";
 	}
