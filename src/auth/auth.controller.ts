@@ -8,45 +8,45 @@ import { StatusCodes } from "http-status-codes";
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @Post()
+    @Post("sign-up")
     @HttpCode(StatusCodes.CREATED)
     signUp(@Body() signUpDto: SignUpDto) {
         this.authService.signUp();
     }
 
-    @Get(":email")
+    @Get("forgot-password/:email")
     @HttpCode(StatusCodes.NO_CONTENT)
     forgotPassword(@Param("email") email: string) {
         this.authService.forgotPassword(email);
     }
 
-    @Put(":token")
+    @Put("reset-password/:token")
     @HttpCode(StatusCodes.NO_CONTENT)
     resetPassword(@Param("token") token: string) {
-        console.log(token);
+        this.authService.resetPassword(token);
     }
 
-    @Put(":token")
+    @Put("verify-email/:token")
     @HttpCode(StatusCodes.NO_CONTENT)
     verifyEmail(@Param("token") token: string) {
-
+        this.authService.verifyEmail(token);
     }
 
-    @Post()
+    @Post("sign-in")
     @HttpCode(StatusCodes.NO_CONTENT)
     signIn(@Body() signInDto: SignInDto) {
-
+        this.authService.signIn();
     }
 
-    @Post()
+    @Post("refresh-token")
     @HttpCode(StatusCodes.NO_CONTENT)
     refreshToken() {
-
+        this.authService.refreshToken();
     }
 
-    @Post()
+    @Post("sign-out")
     @HttpCode(StatusCodes.NO_CONTENT)
     signOut() {
-
+        this.authService.signOut();
     }
 }
