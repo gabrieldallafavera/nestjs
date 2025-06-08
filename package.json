@@ -1,24 +1,10 @@
 {
 	"name": "nestjs",
 	"version": "0.0.1",
-	"description": "",
-	"author": "",
 	"private": true,
-	"license": "UNLICENSED",
-	"scripts": {
-		"build": "nest build",
-		"start": "nest start",
-		"start:dev": "nest start --watch",
-		"start:debug": "nest start --debug --watch",
-		"start:prod": "node dist/main",
-		"lint": "biome check",
-		"lint:fix": "biome check --fix",
-		"format": "biome format --fix",
-		"test": "jest",
-		"test:watch": "jest --watch",
-		"test:cov": "jest --coverage",
-		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:e2e": "jest --config ./test/jest-e2e.json"
+	"engines": {
+		"node": ">=22.14.0",
+		"pnpm": ">= 10.7.0"
 	},
 	"dependencies": {
 		"@nestjs/common": "^11.0.1",
@@ -49,6 +35,21 @@
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.20.0"
+	},
+	"scripts": {
+		"build": "nest build",
+		"start": "nest start",
+		"start:dev": "nest start --watch",
+		"start:debug": "nest start --debug --watch",
+		"start:prod": "node dist/main",
+		"lint": "biome check",
+		"lint:fix": "biome check --fix",
+		"format": "biome format --fix",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:cov": "jest --coverage",
+		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+		"test:e2e": "jest --config ./test/jest-e2e.json"
 	},
 	"jest": {
 		"moduleFileExtensions": ["js", "json", "ts"],

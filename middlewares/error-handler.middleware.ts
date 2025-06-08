@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, type NestMiddleware } from "@nestjs/common";
-import type { NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 @Injectable()
 export class ErrorHandlerMiddleware implements NestMiddleware {
-	use(req: Request, res: Response, next: NextFunction) {
+	use(_req: Request, res: Response, next: NextFunction) {
 		try {
 			next();
 		} catch (error) {

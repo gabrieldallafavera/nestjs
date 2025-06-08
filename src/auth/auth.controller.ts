@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UsePipes } from "@nestjs/common";
-import { BindValidationPipe } from "src/pipes/bind-validation.pipe";
+import { BindValidationPipe } from "pipes/bind-validation.pipe";
 import type { AuthService } from "./auth.service";
 import { signInDtoSchema } from "./dto/schema/sign-in.schema";
 import { signUpDtoSchema } from "./dto/schema/sign-up.schema";
