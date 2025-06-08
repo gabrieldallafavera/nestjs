@@ -2,30 +2,19 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AuthService {
-    signUp(/* signUp: SignUp */) {
+	signUp(/* signUp: SignUp */) {}
 
-    }
+	forgotPassword(email: string) {
+		console.log(email);
+	}
 
-    forgotPassword(email: string) {
-        console.log(email);
-    }
+	resetPassword(token: string) {}
 
-    resetPassword(token: string) {
-    }
+	verifyEmail(token: string) {}
 
-    verifyEmail(token: string) {
+	signIn(/* signIn: SignIn */) {}
 
-    }
+	refreshToken() {}
 
-    signIn(/* signIn: SignIn */) {
-
-    }
-
-    refreshToken() {
-
-    }
-
-    signOut() {
-
-    }
+	signOut() {}
 }
