@@ -1,7 +1,7 @@
 import z from "zod";
-import { passwordSchema } from "./password.schema";
+import { passwordDtoSchema } from "./password.schema";
 
-export const signUpDtoSchema = passwordSchema
+export const signUpDtoSchema = passwordDtoSchema
 	.extend({
 		name: z.string().max(150, { message: "Max length exceeded" }),
 		cpf: z.string().regex(/^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/g, { message: "CPF is invalid" }),

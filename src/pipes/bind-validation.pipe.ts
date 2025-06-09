@@ -6,7 +6,7 @@ import type { ZodSchema } from "zod";
 export class BindValidationPipe implements PipeTransform {
 	constructor(private schema: ZodSchema) {}
 
-	transform(value: unknown, metadata: ArgumentMetadata) {
+	transform(value: unknown, _metadata: ArgumentMetadata) {
 		try {
 			return this.schema.parse(value);
 		} catch (error) {
