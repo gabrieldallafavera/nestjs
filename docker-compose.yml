@@ -46,16 +46,14 @@ services:
     restart: unless-stopped
     build:
       context: .
-      dockerfile: ./Dockerfile.dev
+      dockerfile: Dockerfile.dev
     env_file:
       - .env
     volumes:
-      - /app/node_modules
       - ./:/app
+      - /app/node_modules
     expose:
       - 3000
-    ports:
-      - "3000:3000"
     networks:
       - nginx
     depends_on:
