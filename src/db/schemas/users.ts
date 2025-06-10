@@ -6,12 +6,12 @@ export const usersTable = pgTable("users", {
 	name: varchar("name", { length: 150 }).notNull(),
 	username: varchar("username", { length: 50 }).notNull().unique(),
 	email: varchar("email", { length: 150 }).notNull().unique(),
-	verifiedAt: timestamp("verified_at", { withTimezone: true }),
+	verifiedAt: timestamp("verified_at", { withTimezone: false }),
 	passwordHash: bytea("password_hash").notNull(),
 	passwordSalt: bytea("password_salt").notNull(),
-	createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-	updatedAt: timestamp("updated_at", { withTimezone: true })
+	createdAt: timestamp("created_at", { withTimezone: false }).defaultNow(),
+	updatedAt: timestamp("updated_at", { withTimezone: false })
 		.defaultNow()
 		.$onUpdate(() => new Date()),
-	deletedAt: timestamp("deleted_at", { withTimezone: true }),
+	deletedAt: timestamp("deleted_at", { withTimezone: false }),
 });

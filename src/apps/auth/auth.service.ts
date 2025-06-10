@@ -1,4 +1,10 @@
-import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+	BadRequestException,
+	ForbiddenException,
+	Injectable,
+	InternalServerErrorException,
+	UnauthorizedException,
+} from "@nestjs/common";
 import jwt from "jsonwebtoken";
 import { client } from "../../../config/redis";
 import { userRepository } from "../../repositories/user.repository";
@@ -6,6 +12,7 @@ import { passwordHandler } from "../../utils/password";
 import { tokenHandler } from "../../utils/token";
 import type { SignInDto } from "./dto/sign-in.dto";
 import type { SignUpDto } from "./dto/sign-up.dto";
+import { resend } from "../../../config/email";
 
 @Injectable()
 export class AuthService {
@@ -27,15 +34,20 @@ export class AuthService {
 
 		const token = tokenHandler.createSimpleToken();
 		client.setEx(token, 30 * 60, response.id.toString());
-		// const { error } = await resend.sendHtmlEmail({
-		// 	to: request.email,
-		// 	subject: i18n.t("emails:verify_email_subject"),
-		// 	html: i18n.t("emails:verify_email_body", { token: token }),
-		// });
+		const { error } = await resend.sendHtmlEmail({
+			to: signUpDto.email,
+			subject: "Verificar email",
+			html: `
+				<h1>Verifique seu email</h1>
+				<p>
+					<a href=\"http://localhost:3000/verify-email/{{token}}\">Click aqui</a> para verificar seu email. Este link ficará valido por apenas 30 minutos.
+				</p>
+			`,
+		});
 
-		// if (error) {
-		// 	throw new InternalServerErrorException("Error sending email");
-		// }
+		if (error) {
+			throw new InternalServerErrorException("Error sending email");
+		}
 	}
 
 	async forgotPassword(email: string) {
@@ -46,15 +58,20 @@ export class AuthService {
 
 		const token = tokenHandler.createSimpleToken();
 		client.setEx(token, 30 * 60, user.id.toString());
-		// const { error } = await resend.sendHtmlEmail({
-		// 	to: user.email,
-		// 	subject: i18n.t("emails:reset_password_subject"),
-		// 	html: i18n.t("emails:forgot_password_body", { token: token }),
-		// });
+		const { error } = await resend.sendHtmlEmail({
+			to: user.email,
+			subject: "Redefinir senha",
+			html: `
+				<h1>Redefinir sua senha</h1>
+				<p>
+					<a href=\"http://localhost:3000/reset-password/{{token}}\">Clique aqui</a> para redefinir sua senha. Este link ficará valido por apenas 30 minutos.
+				</p>
+			`,
+		});
 
-		// if (error) {
-		// 	throw new InternalServerErrorException("Error sending email");
-		// }
+		if (error) {
+			throw new InternalServerErrorException("Error sending email");
+		}
 	}
 
 	async resetPassword(token: string, password: string) {
@@ -90,15 +107,20 @@ export class AuthService {
 		if (!user.verifiedAt) {
 			const token = tokenHandler.createSimpleToken();
 			client.setEx(token, 30 * 60, user.id.toString());
-			// const { error } = await resend.sendHtmlEmail({
-			// 	to: user.email,
-			// 	subject: i18n.t("emails:verify_email_subject"),
-			// 	html: i18n.t("emails:verify_email_body", { token: token }),
-			// });
+			const { error } = await resend.sendHtmlEmail({
+				to: user.email,
+				subject: "Verificar email",
+				html: `
+					<h1>Verifique seu email</h1>
+					<p>
+						<a href=\"http://localhost:3000/verify-email/{{token}}\">Click aqui</a> para verificar seu email. Este link ficará valido por apenas 30 minutos.
+					</p>
+				`,
+			});
 
-			// if (error) {
-			// 	throw new InternalServerErrorException("Error sending email");
-			// }
+			if (error) {
+				throw new InternalServerErrorException("Error sending email");
+			}
 			throw new ForbiddenException("User not verified");
 		}
 

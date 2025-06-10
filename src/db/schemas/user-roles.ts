@@ -10,8 +10,8 @@ export const userRolesTable = pgTable(
 			.notNull()
 			.references(() => usersTable.id, { onDelete: "cascade" }),
 		role: varchar("role", { length: 50 }).notNull(),
-		createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-		updatedAt: timestamp("updated_at", { withTimezone: true })
+		createdAt: timestamp("created_at", { withTimezone: false }).defaultNow().notNull(),
+		updatedAt: timestamp("updated_at", { withTimezone: false })
 			.defaultNow()
 			.notNull()
 			.$onUpdate(() => new Date()),
