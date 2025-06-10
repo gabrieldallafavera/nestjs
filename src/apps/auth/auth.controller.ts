@@ -15,7 +15,7 @@ import {
 import { addSeconds } from "date-fns";
 import type { Request, Response } from "express";
 import { BindValidationPipe } from "../../pipes/bind-validation.pipe";
-import type { AuthService } from "./auth.service";
+import { AuthService } from "./auth.service";
 import type { PasswordDto } from "./dto/password.dto";
 import { passwordDtoSchema } from "./dto/schema/password.schema";
 import { signInDtoSchema } from "./dto/schema/sign-in.schema";
