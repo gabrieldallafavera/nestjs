@@ -13,7 +13,7 @@ const dbDatabase = process.env.DB_DATABASE;
 
 export const client = new Client({
 	// connectionString: `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbDatabase}`,
-	connectionString: `postgresql://postgres:123456@localhost:5432/postgres`,
+	connectionString: "postgresql://postgres:123456@localhost:5432/postgres",
 });
 
 export const db = drizzle({ client });

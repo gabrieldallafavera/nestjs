@@ -1,6 +1,6 @@
 import Crypto from "node:crypto";
 
-export namespace passwordLib {
+export namespace passwordHandler {
 	export function createPasswordHash(password: string): { passwordHash: Buffer; passwordSalt: Buffer } {
 		const hmac = Crypto.createHmac("sha512", Crypto.randomBytes(64));
 		const passwordHash = hmac.update(password).digest();

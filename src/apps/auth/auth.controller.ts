@@ -1,17 +1,29 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Req, Res, UsePipes } from "@nestjs/common";
-import { BindValidationPipe } from "src/pipes/bind-validation.pipe";
+import {
+	Body,
+	Controller,
+	Get,
+	Headers,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Post,
+	Put,
+	Req,
+	Res,
+	UsePipes,
+} from "@nestjs/common";
+import { addSeconds } from "date-fns";
+import type { Request, Response } from "express";
+import { BindValidationPipe } from "../../pipes/bind-validation.pipe";
 import type { AuthService } from "./auth.service";
+import type { PasswordDto } from "./dto/password.dto";
+import { passwordDtoSchema } from "./dto/schema/password.schema";
 import { signInDtoSchema } from "./dto/schema/sign-in.schema";
 import { signUpDtoSchema } from "./dto/schema/sign-up.schema";
 import type { SignInDto } from "./dto/sign-in.dto";
 import type { SignUpDto } from "./dto/sign-up.dto";
-import { passwordDtoSchema } from './dto/schema/password.schema';
-import { PasswordDto } from "./dto/password.dto";
-import { Request, Response } from 'express';
-import { addSeconds } from "date-fns";
 
-// const tokenExpiresIn = Number(process.env.TOKEN_EXPIRES_IN);
-const tokenExpiresIn = 900;
+const jwtExpiration = Number(process.env.JWT_EXPIRATION);
 
 @Controller("auth")
 export class AuthController {
@@ -49,34 +61,38 @@ export class AuthController {
 	async signIn(@Body() signInDto: SignInDto, @Res() response: Response) {
 		const { accessToken, refeshToken } = await this.authService.signIn(signInDto);
 
-		response.cookie("accessToken", accessToken, { httpOnly: true, expires: addSeconds(new Date(), tokenExpiresIn) });
+		response.cookie("accessToken", accessToken, { httpOnly: true, expires: addSeconds(new Date(), jwtExpiration) });
 		response.cookie("refreshToken", refeshToken, {
 			httpOnly: true,
-			expires: addSeconds(new Date(), tokenExpiresIn * 2),
+			expires: addSeconds(new Date(), jwtExpiration * 2),
 		});
 	}
 
 	@Post("refresh-token")
 	@HttpCode(HttpStatus.NO_CONTENT)
 	async refreshToken(@Req() request: Request, @Res() response: Response) {
-		const accessTokenCookie = request.cookies.accessToken;
-		const refreshTokenCookie = request.cookies.refreshToken;
+		const refreshToken = request.cookies.refreshToken;
 
-		const { newAccessToken, newRefreshToken } = await this.authService.refreshToken(accessTokenCookie, refreshTokenCookie);
+		const { newAccessToken, newRefreshToken } = await this.authService.refreshToken(refreshToken);
 
-		response.cookie("accessToken", newAccessToken, { httpOnly: true, expires: addSeconds(new Date(), tokenExpiresIn) });
+		response.cookie("accessToken", newAccessToken, { httpOnly: true, expires: addSeconds(new Date(), jwtExpiration) });
 		response.cookie("refreshToken", newRefreshToken, {
 			httpOnly: true,
-			expires: addSeconds(new Date(), tokenExpiresIn * 2),
+			expires: addSeconds(new Date(), jwtExpiration * 2),
 		});
 	}
 
 	@Post("sign-out")
 	@HttpCode(HttpStatus.NO_CONTENT)
-	async signOut(@Req() request: Request) {
-		const accessTokenCookie = request.cookies.accessToken;
-		const refreshTokenCookie = request.cookies.refreshToken;
+	async signOut(@Headers("authorization") authorization: string, @Res() response: Response) {
+		if (!authorization) {
+			response.status(HttpStatus.BAD_REQUEST).json({ message: "Token not found" });
+			return;
+		}
 
-		await this.authService.signOut(accessTokenCookie, refreshTokenCookie);
+		this.authService.signOut(authorization.split(" ")[1]);
+
+		response.clearCookie("accessToken");
+		response.clearCookie("refreshToken");
 	}
 }
