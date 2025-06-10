@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import * as cookieParser from "cookie-parser";
@@ -10,7 +11,7 @@ async function bootstrap() {
 	app.use(cookieParser());
 
 	await client.connect();
-	await app.listen(process.env.PORT ?? 3000);
+	await app.listen(Number(process.env.PORT));
 	Logger.log(`Server listening on: ${process.env.PORT}\n`);
 }
 bootstrap();

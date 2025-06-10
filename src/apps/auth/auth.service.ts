@@ -1,6 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { client } from "../../../config/redis";
 import jwt from "jsonwebtoken";
+import { client } from "../../../config/redis";
 import { userRepository } from "../../repositories/user.repository";
 import { passwordHandler } from "../../utils/password";
 import { tokenHandler } from "../../utils/token";

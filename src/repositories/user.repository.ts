@@ -1,5 +1,5 @@
-import { db } from "../../config/db";
 import { eq, or } from "drizzle-orm";
+import { db } from "../../config/db";
 import { usersTable } from "../db/schemas/users";
 
 export namespace userRepository {
